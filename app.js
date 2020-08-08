@@ -129,4 +129,4 @@ app.get('/certificate', (req, res) => {
     })
 })
 
-app.listen(3009, () => console.log('Server started :D\n'))
+app.listen(3009 || process.env.PORT, () => console.log('Server started :D\n'))
