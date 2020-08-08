@@ -1,0 +1,60 @@
+<%- include('./partials/header') %>
+
+<img class="wave" src="/images/wave.png">
+
+	<div class="container">
+
+		<div class="img">
+			<img src="/images/bg.svg">
+		</div>
+
+
+		<div class="login-content">
+
+			<form action="/certificate" method='GET'>
+
+				<img src="/images/avatar.svg">
+
+				<h2 class="title">Welcome</h2>
+
+
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<h5>Firstname</h5>
+           		   		<input type="text" class="input" name='firstName' required>
+           		   </div>
+           		</div>
+
+
+              <div class="input-div one">
+                 <div class="i">
+                    <i class="fas fa-user"></i>
+                 </div>
+                 <div class="div">
+                    <h5>Lastname</h5>
+                    <input type="text" class="input" name='lastName' required>
+                 </div>
+              </div>
+
+
+           		<div class="input-div pass">
+           		   <div class="i"> 
+           		    	<i class="fa fa-thumbtack"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<h5>Portfolio</h5>
+           		    	<input type="text" class="input" name='portFolio' required>
+            	   </div>
+            	</div>
+
+
+            	<input type="submit" class="btn" value="Get Certificate">
+
+            </form>
+        </div>
+    </div>
+
+<%- include('./partials/footer') %>
