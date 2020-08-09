@@ -70,10 +70,10 @@ app.get('/download', (req, res) => {
 app.get('/certificate', (req, res) => {
 
     let newUser = {
-        firstName: req.query.firstName,
-        lastName: req.query.lastName,
-        portFolio: req.query.portFolio
-    };
+    'firstName': new RegExp(`^${req.query.firstName}$`, 'i'),
+    'lastName': new RegExp(`^${req.query.lastName}$`, 'i'),
+    'portFolio': new RegExp(`^${req.query.portFolio}$`, 'i'),
+        };
 
     user.findOne(newUser, (err, foundUser) => {
         if (err) {
