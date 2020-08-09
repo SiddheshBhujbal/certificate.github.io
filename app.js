@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Jimp = require('jimp');
-const toastr = require('toastr');
+const _ = require('lodash');
 // const session = require('express-session')
 // const flash = require('connect-flash');
 
@@ -12,13 +12,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static('public'));
 app.set('view engine','ejs');
-// app.use(session({
-//     secret: 'Any data',
-//     cookie: {maxAge: 60000},
-//     resave: false,
-//     saveUninitialized: false
-// }));
-// app.use(flash());
+
+global.state = '';
 
 mongoose.connect('mongodb+srv://msSiddhesh:ms-certificate@cluster0.xylfk.mongodb.net/certificate?retryWrites=true&w=majority',{useNewUrlParser : true, useCreateIndex: true, useUnifiedTopology: true})
 // mongoose.connect('mongodb://localhost:27017/certificate', {
@@ -27,17 +22,17 @@ mongoose.connect('mongodb+srv://msSiddhesh:ms-certificate@cluster0.xylfk.mongodb
 // });
 
 const userSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    portFolio: String
+    firstName: {type: String,trim: true},
+    lastName: {type: String,trim: true},
+    portFolio: {type: String,trim: true}
 })
 
 const user = mongoose.model('user', userSchema)
 
 // user.create({
-// 	firstName : 'Muddayya',
-// 	lastName : 'Swami',
-// 	portFolio : 'Alumni Outreach'
+// 	firstName : 'Siddhesh',
+// 	lastName : 'Bhujbal',
+// 	portFolio : 'Web'
 // })
 
 app.get('/', (req, res) => {
@@ -45,35 +40,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/download', (req, res) => {
-
-// toastr.options = {
-//   "closeButton": false,
-//   "debug": false,
-//   "newestOnTop": false,
-//   "progressBar": false,
-//   "positionClass": "toast-top-right",
-//   "preventDuplicates": false,
-//   "onclick": null,
-//   "showDuration": "300",
-//   "hideDuration": "1000",
-//   "timeOut": "5000",
-//   "extendedTimeOut": "1000",
-//   "showEasing": "swing",
-//   "hideEasing": "linear",
-//   "showMethod": "fadeIn",
-//   "hideMethod": "fadeOut"
-// }
-//     toastr.success('Successfully Downloaded !!')
     res.download('./image/newCertificate.jpg');
     });
 
 app.get('/certificate', (req, res) => {
 
+
     let newUser = {
-    'firstName': new RegExp(`^${req.query.firstName}$`, 'i'),
-    'lastName': new RegExp(`^${req.query.lastName}$`, 'i'),
-    'portFolio': new RegExp(`^${req.query.portFolio}$`, 'i'),
-        };
+    'firstName': new RegExp(`^${_.trim(req.query.firstName)}$`, 'i'),
+    'lastName': new RegExp(`^${_.trim(req.query.lastName)}$`, 'i'),
+    'portFolio': new RegExp(`^${_.trim(req.query.portFolio)}$`, 'i')
+         };
 
     user.findOne(newUser, (err, foundUser) => {
         if (err) {
@@ -81,10 +58,10 @@ app.get('/certificate', (req, res) => {
             res.redirect('/')
         } else {
             if (!foundUser) {
-                console.log('Error @not found user')
+                state = false;
                 res.redirect('/')
             } else {
-
+                
             var fullName = foundUser.firstName + ' ' + foundUser.lastName;
             Jimp.read('image/certificate.jpg')
                 .then(cert => {
@@ -122,7 +99,7 @@ app.get('/certificate', (req, res) => {
                     });
 
                 })
-            // req.flash('message', 'Downloaded successfully :)');
+                state = true;
             res.redirect('/download');
         }
     }

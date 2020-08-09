@@ -11,7 +11,7 @@
 
 		<div class="login-content">
 
-			<form action="/certificate" method='GET'>
+			<form action="/certificate" method='GET' >
 
 				<img src="/images/avatar.svg">
 
@@ -56,5 +56,13 @@
             </form>
         </div>
     </div>
+
+    <%if(state === true){%>
+      <script> swal('Thank you', "For Being Part of MINDSPARK'20", 'success') </script>
+    <%}else if (state === false){%>
+      <script> swal('Oops...', 'Invalid Participant', 'error') </script>
+    <%}%>
+
+
 
 <%- include('./partials/footer') %>
